@@ -1,6 +1,6 @@
 import React from "react";
 import { SemanticToastContainer } from 'react-semantic-toasts';
-import { Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { createBrowserHistory as createHistory } from "history";
 
 import ErrorPage from "../containers/ErrorPage";
@@ -12,7 +12,7 @@ import NavBar from "../components/NavBar";
 export const history = createHistory();
 
 const AppRouter = () => (
-  <Router history={history}>
+  <BrowserRouter history={history}>
     <div style={{
       height: '100vh',
     }}>
@@ -26,7 +26,7 @@ const AppRouter = () => (
         <Route component={ErrorPage} />
       </Switch>
     </div>
-  </Router>
+  </BrowserRouter>
 );
 
 export default AppRouter;

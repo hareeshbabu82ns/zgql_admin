@@ -8,12 +8,19 @@ import { Editor } from 'graphql-editor';
 import { toast } from 'react-semantic-toasts';
 import SchemaContainer from '../utils/SchemaContainer'
 
-function GraphqlEditorPage(props) {
+function GraphqlEditorPage({ schemaId, match, onSave }) {
   const schemaContainer = SchemaContainer.useContainer()
-  const [schemaName, setSchemaName] = useState(props.schema || _.get(props.match, 'params.id', ''))
-  const [editorVisible, setEditorVisibility] = useState(props.editorVisible || true)
-  const [isLoading, setLoading] = useState(false);
-  let [editorController, setEditorController] = useState(null)
+  const [schemaName, setSchemaName] = useState(schemaId || _.get(match, 'params.id', ''))
+
+  const [schema, setSchema] = useState({
+    code: ``, // acutal SDL schema
+    libraries: ``, // supporting Types or Enume Libraries
+  });
+
+  React.useEffect(() => {
+    if (!_.isEmpty(schemaName))
+      schemaContainer.load(schemaName).then((res) => setSchema({ code: res }))
+  }, [schemaName])
 
   return (
     <div
@@ -25,17 +32,17 @@ function GraphqlEditorPage(props) {
         width: '100%'
       }}
     >
-      <Icon link name='save outline'
+      <Icon link name='save outline' color='teal'
         disabled={schemaContainer.isLoading}
         loading={schemaContainer.isLoading}
         onClick={() => {
-          if (editorController && props.onSave)
-            props.onSave(schemaName, editorController.schema)
-          if (editorController && !_.isEmpty(schemaName)) {
-            // console.log(editorController.schema)
-            schemaContainer.save(schemaName, editorController.schema)
+          if (onSave)
+            onSave(schemaName, schema.code)
+          if (!_.isEmpty(schemaName)) {
+            // console.log(schema)
+            schemaContainer.save(schemaName, schema.code)
               .then(data => {
-                editorController.loadGraphQL(data)
+                setSchema({ code: data })
                 toast({ type: 'info', title: 'updated' });
               })
               .catch(err => toast({ type: 'error', title: _.get(err, 'response.data', err.message) }))
@@ -43,16 +50,13 @@ function GraphqlEditorPage(props) {
         }}
         style={{ zIndex: '999', position: 'absolute', top: '154px', left: '8px' }} />
       <Editor
+        // activePane={"code"}
+        onGraphChange={(controller) => { console.log(schema) }}
         readonly={schemaContainer.isLoading}
-        graphController={(controller) => {
-          controller.setPassDiagramErrors((errors) => console.log(errors))
-          setEditorController(controller)
-          if (!_.isEmpty(schemaName))
-            schemaContainer.load(schemaName).then((res) => controller.loadGraphQL(res, true))
-          // controller.setOnSerialise((schema) => { console.log(schema) })
-        }}
-        placeholder="Start Building Graph"
-        editorVisible={editorVisible || !schemaContainer.isLoading} />
+        onSchemaChange={setSchema}
+        initialSizeOfSidebar={'45vw'}
+        schema={schema}
+      />
     </div>
   );
 }

@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import _ from 'lodash'
-import {
-  Icon
-} from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { toast } from 'react-semantic-toasts';
 import { useQuery } from "react-apollo"
 import { SEARCH_SCHEMA } from '../utils/gql_queries_schema'
 import SchemaContainer from '../utils/SchemaContainer'
-import { Provider } from 'react-redux'
-import { Playground } from 'graphql-playground'
+
 import config from '../utils/config'
+
+//ref: https://blog.logrocket.com/complete-guide-to-graphql-playground/
 
 function GraphiQLPage({ match }) {
   const { loading, error, data } = useQuery(SEARCH_SCHEMA, {
@@ -29,11 +28,7 @@ function GraphiQLPage({ match }) {
 
   return (
     <div>
-      <Playground
-        endpoint={`${config.baseUrl}${schema.path}?sap-client=${config.sapClient}`}
-        headers={[{ 'access-control-allow-origin': '*' }]} />
     </div>
   );
 }
-
 export default withRouter(GraphiQLPage);
