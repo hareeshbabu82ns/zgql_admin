@@ -1,59 +1,46 @@
-import React, { useState } from 'react';
-import { GraphQLEditor, } from 'graphql-editor';
-import { useRecoilValue } from 'recoil';
-import { themeModeState, THEME_DARK } from '../state/theme_mode';
-
-import editorTheme from '../theme/editorPalette'
-
-const schemas = {
-  pizza: `
-type Query{
-	pizzas: [Pizza!]
-}
-`,
-  pizzaLibrary: `
-type Pizza{
-  name:String
-}
-`,
-};
-
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { GraphEditor, } from '../components/GraphEditor';
+import axios from '../utils/GqlAxiosClient'
 
 export const GraphEditorPage = () => {
-  const themeMode = useRecoilValue( themeModeState )
 
-  console.log( editorTheme.dark )
+  const params = useParams()
 
-  const [ mySchema, setMySchema ] = useState( {
-    code: schemas.pizza,
-    libraries: schemas.pizzaLibrary,
-  } );
+  const [ schema, setSchema ] = React.useState( { code: '', libraries: '' } )
+  const [ loading, setLoading ] = React.useState( false )
+
+  const onSave = async ( schema ) => {
+    // console.log( 'Saving Schema...', params.id, schema )
+    setLoading( true )
+    const res = await axios.post( '/', schema.code, {
+      params: { sdl: params.id },
+      headers: { 'content-type': 'text/plain; charset="utf-8"' }
+    } )
+    setSchema( { ...schema, code: res.data } )
+    setLoading( false )
+  }
+
+  useEffect( () => {
+    // console.log( 'Loading Schema...', params.id )
+    setLoading( true )
+    axios
+      .get( '/', { params: { sdl: params.id } } )
+      .then( ( res ) => setSchema( { ...schema, code: res.data } ) )
+      .catch( () => setSchema( { ...schema, code: '' } ) )
+      .finally( () => setLoading( false ) )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ params ] )
+
+  if ( schema?.code === '' ) return null
+
   return (
-    <div style={{ display: "flex", alignItems: "stretch" }}>
 
-      <div
-        style={{
-          flex: 1,
-          alignSelf: 'stretch',
-          display: 'flex',
-          position: 'relative',
-        }}
-      >
-        <GraphQLEditor
-          onStateChange={( props ) => { }}
-          onSchemaChange={( props ) => {
-            setMySchema( props );
-          }}
-          setSchema={( props, isInvalid ) => { setMySchema( props ) }}
-          schema={mySchema}
-          theme={themeMode === THEME_DARK ? editorTheme.dark : editorTheme.light}
-        />
-      </div>
+    <GraphEditor key={params?.id || 'new'}
+      code={schema.code} libraries={schema.libraries}
+      loading={loading} onSave={onSave}
+    />
 
-      <div style={{ height: "1000px" }}>
-      </div>
-
-    </div>
   );
 };
 

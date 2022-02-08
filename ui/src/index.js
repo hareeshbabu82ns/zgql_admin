@@ -8,15 +8,20 @@ import reportWebVitals from './reportWebVitals';
 
 import { RecoilRoot } from 'recoil';
 import ThemeConfig from './theme/theme';
+import { ApolloProvider } from '@apollo/client';
+
+import client from './utils/GqlClient'
 
 ReactDOM.render(
   <React.StrictMode>
 
     <RecoilRoot>
       <ThemeConfig>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <ApolloProvider client={client}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ApolloProvider>
       </ThemeConfig>
     </RecoilRoot>
     {/* <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
