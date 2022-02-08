@@ -3,8 +3,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 // import ListSubheader from '@mui/material/ListSubheader';
-import AritmeticIcon from '@mui/icons-material/CalculateOutlined';
+import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import DashIcon from '@mui/icons-material/DashboardOutlined';
+import SchemaIcon from '@mui/icons-material/SchemaOutlined';
+import EditIcon from '@mui/icons-material/ModeEditOutline';
 import { Link } from 'react-router-dom'
 
 export const mainListItems = (
@@ -15,11 +17,23 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem component={Link} to="/arithmetic">
+    <ListItem component={Link} to="/schema">
       <ListItemIcon>
-        <AritmeticIcon />
+        <SchemaIcon />
       </ListItemIcon>
-      <ListItemText primary="Arithmetic Test" />
+      <ListItemText primary="List Schema" />
+    </ListItem>
+    <ListItem component={Link} to="/schema/new">
+      <ListItemIcon>
+        <EditIcon />
+      </ListItemIcon>
+      <ListItemText primary="Create Schema" />
+    </ListItem>
+    <ListItem component={Link} to="/settings">
+      <ListItemIcon>
+        <SettingsIcon />
+      </ListItemIcon>
+      <ListItemText primary="User Settings" />
     </ListItem>
   </div>
 );

@@ -1,23 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+
+
 import { GraphEditor, } from '../components/GraphEditor';
 import axios from '../utils/GqlAxiosClient'
 
 export const GraphEditorPage = () => {
 
   const params = useParams()
+  const { enqueueSnackbar } = useSnackbar()
 
-  const [ schema, setSchema ] = React.useState( { code: '', libraries: '' } )
-  const [ loading, setLoading ] = React.useState( false )
+  const [ schema, setSchema ] = useState( { code: '', libraries: '' } )
+  const [ loading, setLoading ] = useState( false )
 
   const onSave = async ( schema ) => {
     // console.log( 'Saving Schema...', params.id, schema )
     setLoading( true )
-    const res = await axios.post( '/', schema.code, {
-      params: { sdl: params.id },
-      headers: { 'content-type': 'text/plain; charset="utf-8"' }
-    } )
-    setSchema( { ...schema, code: res.data } )
+    try {
+      const res = await axios.post( '/', schema.code, {
+        params: { sdl: params.id },
+        headers: { 'content-type': 'text/plain; charset="utf-8"' }
+      } )
+      enqueueSnackbar( 'Saved Schema', { variant: 'success' } )
+      setSchema( { ...schema, code: res.data } )
+    } catch ( e ) {
+      enqueueSnackbar( 'Error Saving Schema', { variant: 'error' } )
+    }
     setLoading( false )
   }
 
@@ -26,8 +35,14 @@ export const GraphEditorPage = () => {
     setLoading( true )
     axios
       .get( '/', { params: { sdl: params.id } } )
-      .then( ( res ) => setSchema( { ...schema, code: res.data } ) )
-      .catch( () => setSchema( { ...schema, code: '' } ) )
+      .then( ( res ) => {
+        setSchema( { ...schema, code: res.data } )
+        enqueueSnackbar( 'Schema Loaded' )
+      } )
+      .catch( () => {
+        setSchema( { ...schema, code: '' } )
+        enqueueSnackbar( 'Error Loading Schema', { variant: 'error' } )
+      } )
       .finally( () => setLoading( false ) )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ params ] )

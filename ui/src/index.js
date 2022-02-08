@@ -10,6 +10,8 @@ import { RecoilRoot } from 'recoil';
 import ThemeConfig from './theme/theme';
 import { ApolloProvider } from '@apollo/client';
 
+import { SnackbarProvider } from 'notistack';
+
 import client from './utils/GqlClient'
 
 ReactDOM.render(
@@ -17,11 +19,13 @@ ReactDOM.render(
 
     <RecoilRoot>
       <ThemeConfig>
-        <ApolloProvider client={client}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ApolloProvider>
+        <SnackbarProvider maxSnack={5}>
+          <ApolloProvider client={client}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ApolloProvider>
+        </SnackbarProvider>
       </ThemeConfig>
     </RecoilRoot>
     {/* <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
