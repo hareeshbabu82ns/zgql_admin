@@ -46,6 +46,7 @@ function AppBar( { open } ) {
         sx={{
           pr: '24px', // keep right padding when drawer closed
         }}
+        variant='dense'
       >
         <IconButton
           edge="start"

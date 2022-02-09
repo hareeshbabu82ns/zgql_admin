@@ -7,7 +7,7 @@ import config from './config'
 const prepareApolloClient = ( {
   baseUrl = config.baseUrl, apiPath, sapClient = config.sapClient, headers = {} } ) => {
   console.log( 'preparing schema for ', apiPath );
-  const httpLink = new HttpLink( { url: `${baseUrl}${apiPath}` } )
+  const httpLink = new HttpLink( { uri: `${baseUrl}${apiPath}` } )
 
   const connectionHeaderMiddleware = new ApolloLink( ( operation, forward ) => {
     // add connection name http header before each request

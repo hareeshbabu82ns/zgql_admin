@@ -63,6 +63,7 @@ function Drawer( { open } ) {
           justifyContent: 'flex-end',
           px: [ 1 ],
         }}
+        variant='dense'
       >
         <IconButton onClick={toggleDrawer}>
           <ChevronLeftIcon />

@@ -3,11 +3,11 @@ import { Alert, AlertTitle, Box, CircularProgress, Paper, Stack, Toolbar, Typogr
 
 const Panel = ( { title, toolbarActions,
   children, actionsLeft, actionsRight,
-  loading, error, onRefresh } ) => {
+  loading, error, onRefresh, titleVarient = "dense" } ) => {
 
-  const Titlebar = ( { title, toolbarActions, onRefresh } ) => {
+  const Titlebar = ( { title, toolbarActions, onRefresh, titleVarient } ) => {
     return ( title || toolbarActions || onRefresh ) ?
-      <Toolbar sx={{ backgroundColor: 'primary.100', borderRadius: 1 }}>
+      <Toolbar sx={{ backgroundColor: 'primary.100', borderRadius: 1 }} variant={titleVarient}>
         {typeof title === 'string' ? <Typography variant="h6" sx={{ flexGrow: 1 }}> {title} </Typography>
           : <Box sx={{ flexGrow: 1 }}>{title}</Box>}
         <Stack direction='row' spacing={1}>
@@ -19,7 +19,7 @@ const Panel = ( { title, toolbarActions,
 
   const loadingPanel = (
     <Box sx={{ border: 1, borderRadius: 1, borderColor: "grey.900" }}>
-      <Titlebar {...{ title, toolbarActions, onRefresh }} />
+      <Titlebar {...{ title, toolbarActions, onRefresh, titleVarient }} />
 
       <Paper sx={{ p: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <CircularProgress />
@@ -29,7 +29,7 @@ const Panel = ( { title, toolbarActions,
 
   const ErrorPanel = ( { error } ) => (
     <Box sx={{ border: 1, borderRadius: 1, borderColor: "grey.900" }}>
-      <Titlebar {...{ title, toolbarActions, onRefresh }} />
+      <Titlebar {...{ title, toolbarActions, onRefresh, titleVarient }} />
 
       <Paper sx={{ p: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Alert severity="warning" variant="outlined">
@@ -54,7 +54,7 @@ const Panel = ( { title, toolbarActions,
   return (
     <Box sx={{ border: 1, borderRadius: 1, borderColor: "grey.900" }}>
 
-      <Titlebar {...{ title, toolbarActions, onRefresh }} />
+      <Titlebar {...{ title, toolbarActions, onRefresh, titleVarient }} />
 
       <Paper sx={{ p: 2, }}>
         {children}
