@@ -2,17 +2,17 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 
-export const FormInputText = ({ name, control, label, rules, ...rest }) => {
+const FormInputText = ( { name, control, label, rules, ...rest } ) => {
   return (
     <Controller
       name={name}
       control={control}
       rules={rules}
-      render={({
+      render={( {
         field: { onChange, value },
         fieldState: { error },
         formState,
-      }) => (
+      } ) => (
         <TextField
           helperText={error ? error.message : null}
           size="small"
@@ -28,3 +28,5 @@ export const FormInputText = ({ name, control, label, rules, ...rest }) => {
     />
   );
 };
+
+export default FormInputText

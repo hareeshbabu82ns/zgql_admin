@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 
-
-import { GraphEditor, } from '../components/GraphEditor';
+import { GraphEditor } from '../components/GraphEditor';
 import axios from '../utils/GqlAxiosClient'
 
 export const GraphEditorPage = () => {
@@ -30,7 +29,7 @@ export const GraphEditorPage = () => {
     setLoading( false )
   }
 
-  useEffect( () => {
+  const onFetch = () => {
     // console.log( 'Loading Schema...', params.id )
     setLoading( true )
     axios
@@ -44,18 +43,20 @@ export const GraphEditorPage = () => {
         enqueueSnackbar( 'Error Loading Schema', { variant: 'error' } )
       } )
       .finally( () => setLoading( false ) )
+  }
+
+  useEffect( () => {
+    onFetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ params ] )
 
   if ( schema?.code === '' ) return null
 
   return (
-
     <GraphEditor key={params?.id || 'new'}
       code={schema.code} libraries={schema.libraries}
-      loading={loading} onSave={onSave}
+      loading={loading} onSave={onSave} onRefetch={onFetch}
     />
-
   );
 };
 

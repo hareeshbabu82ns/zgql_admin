@@ -20,7 +20,7 @@ export const App = () => {
         <Route path="/" >
           <Route index element={<DashboardPage />} />
           <Route path="schema" >
-            <Route path=":id" element={<SchemaEditPage />} />
+            <Route path=":name" element={<SchemaEditPage />} />
             <Route path="new" element={<SchemaCreatePage />} />
             <Route index element={<SchemaListPage />} />
           </Route>

@@ -5,7 +5,6 @@ import {
 } from "@mui/material"
 import RefreshIcon from '@mui/icons-material/Refresh'
 import EditIcon from '@mui/icons-material/EditOutlined'
-import DeleteIcon from '@mui/icons-material/DeleteOutline'
 import GoToIcon from '@mui/icons-material/ArrowForwardOutlined'
 import AddIcon from '@mui/icons-material/AddOutlined'
 import { useQuery, NetworkStatus } from "@apollo/client"
@@ -94,12 +93,11 @@ const SchemaGridItem = ( { schema } ) => {
 
       <CardActions disableSpacing
         sx={{ justifyContent: 'flex-end' }}>
-        <IconButton aria-label="Schema Description">
+        <IconButton aria-label="Edit Schema"
+          onClick={() => navigate( `/schema/${schema.name}` )}>
           <EditIcon />
         </IconButton>
-        <IconButton aria-label="Delete Schema">
-          <DeleteIcon />
-        </IconButton>
+
         <IconButton aria-label="Edit Schema Graph"
           onClick={() => navigate( `/editor/${schema.name}` )}>
           <GoToIcon />
