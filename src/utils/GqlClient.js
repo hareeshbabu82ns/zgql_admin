@@ -1,19 +1,34 @@
-import ApolloClient from "apollo-boost"
+import {
+  ApolloClient, InMemoryCache,
+  HttpLink, ApolloLink, concat
+} from "@apollo/client";
 import config from './config'
 
-const prepareApolloClient = ({
-  baseUrl = config.baseUrl, apiPath, sapClient = config.sapClient }) => {
-  console.log('preparing schema for ', apiPath);
-  const client = new ApolloClient({
-    uri: `${baseUrl}${apiPath}`
-    // uri: `${baseUrl}${apiPath}?sap-client=${sapClient}`
-  })
+const prepareApolloClient = ( {
+  baseUrl = config.baseUrl, apiPath, sapClient = config.sapClient, headers = {} } ) => {
+  console.log( 'preparing schema for ', apiPath );
+  const httpLink = new HttpLink( { uri: `${baseUrl}${apiPath}` } )
+
+  const connectionHeaderMiddleware = new ApolloLink( ( operation, forward ) => {
+    // add connection name http header before each request
+    operation.setContext( ( { headers = {} } ) => ( {
+      headers: {
+        ...headers,
+      }
+    } ) )
+    return forward( operation )
+  } )
+
+  const client = new ApolloClient( {
+    cache: new InMemoryCache(),
+    link: concat( connectionHeaderMiddleware, httpLink ),
+  } );
   return client;
 }
 
-const client = prepareApolloClient({
+const client = prepareApolloClient( {
   apiPath: `${config.gqlPath}${config.gqlAdminPath}`
-})
+} )
 // new ApolloClient({
 //   uri: `${config.baseUrl}${config.gqlPath}${config.gqlAdminPath}?sap-client=${config.sapClient}`
 // })
