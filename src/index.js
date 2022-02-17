@@ -1,17 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'semantic-ui-css/semantic.min.css'
+import { BrowserRouter } from "react-router-dom";
 
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
-import 'react-semantic-toasts/styles/react-semantic-alert.css';
+import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(<React.StrictMode>
-  <App />
-</React.StrictMode>, document.getElementById('root'));
+import { RecoilRoot } from 'recoil';
+import ThemeConfig from './theme/theme';
+import { ApolloProvider } from '@apollo/client';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+import { SnackbarProvider } from 'notistack';
+
+import client from './utils/GqlClient'
+
+ReactDOM.render(
+  <React.StrictMode>
+
+    <RecoilRoot>
+      <ThemeConfig>
+        <SnackbarProvider maxSnack={5}>
+          <ApolloProvider client={client}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ApolloProvider>
+        </SnackbarProvider>
+      </ThemeConfig>
+    </RecoilRoot>
+    {/* <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      <p>some text</p>
+      <div style={{ overflow: "scroll" }}><App /></div>
+      <p>some text</p>
+    </div> */}
+
+  </React.StrictMode>,
+  document.getElementById( 'root' )
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

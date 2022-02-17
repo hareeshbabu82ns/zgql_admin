@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import { gql } from "@apollo/client"
 
 const GET_SCHEMA_LIST = gql`
   {
@@ -11,7 +11,7 @@ const GET_SCHEMA_LIST = gql`
       mutation
     }
   }
-`;
+`
 const SEARCH_SCHEMA = gql`
   query schema($schemaInput:SchemaWhereInput!){
     schema(where:$schemaInput){
@@ -23,7 +23,7 @@ const SEARCH_SCHEMA = gql`
       mutation
     }
   }
-`;
+`
 
 const UPDATE_SCHEMA_WHERE = gql`
 mutation UpdateSchema($data: SchemaUpdateDataInput!,
@@ -35,7 +35,7 @@ mutation UpdateSchema($data: SchemaUpdateDataInput!,
       path
     }
   }
-`;
+`
 const CREATE_SCHEMA = gql`
 mutation CreateSchema($data: SchemaInput!){
     createSchema(with:[$data]){
@@ -45,24 +45,24 @@ mutation CreateSchema($data: SchemaInput!){
       path
     }
   }
-`;
+`
 const DELETE_SCHEMA_BY_NAME = gql`
 mutation DeleteSchema($name: String!){
     deleteSchema(where:{name:$name}){
       id:guid
     }
   }
-`;
+`
 const DELETE_SCHEMA_BY_ID = gql`
 mutation DeleteSchema($id: ID!){
     deleteSchema(where:{guid:$id}){
       id:guid
     }
   }
-`;
+`
 
 export {
   GET_SCHEMA_LIST, SEARCH_SCHEMA,
   UPDATE_SCHEMA_WHERE, CREATE_SCHEMA, DELETE_SCHEMA_BY_ID,
   DELETE_SCHEMA_BY_NAME
-};
+}
