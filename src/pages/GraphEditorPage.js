@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 
 import { GraphEditor } from '../components/GraphEditor';
 import axios from '../utils/GqlAxiosClient'
+import { gqlParse } from '../utils/gql_utils';
 
 export const GraphEditorPage = () => {
 
@@ -17,7 +18,7 @@ export const GraphEditorPage = () => {
     // console.log( 'Saving Schema...', params.id, schema )
     setLoading( true )
     try {
-      const res = await axios.post( '/', schema.code, {
+      const res = await axios.post( '/', gqlParse( { code: schema.code } ), {
         params: { sdl: params.id },
         headers: { 'content-type': 'text/plain; charset="utf-8"' }
       } )
@@ -35,7 +36,7 @@ export const GraphEditorPage = () => {
     axios
       .get( '/', { params: { sdl: params.id } } )
       .then( ( res ) => {
-        setSchema( { ...schema, code: res.data } )
+        setSchema( { ...schema, code: gqlParse( { code: res.data } ) } )
         enqueueSnackbar( 'Schema Loaded' )
       } )
       .catch( () => {

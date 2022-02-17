@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil'
 import { IconButton, Tooltip, Stack } from "@mui/material"
 import SaveIcon from '@mui/icons-material/SaveOutlined'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import { print, parse } from 'graphql'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 
 import { themeModeState, THEME_DARK } from '../state/theme_mode'
 import editorTheme from '../theme/editorPalette'
@@ -12,7 +12,8 @@ import GraphImportMenu from './GraphImportMenu'
 import FunctionModuleImportDlg from './FunctionModuleImportDlg'
 import ClassImportDlg from './ClassImportDlg'
 
-export const GraphEditor = ( { code, libraries, onSave, onRefetch, loading, enableImports = true } ) => {
+export const GraphEditor = ( { code, libraries, onSave, onRefetch, onCopy,
+  state, loading, enableImports = true } ) => {
   const themeMode = useRecoilValue( themeModeState )
   // console.log( editorTheme.dark )
 
@@ -20,7 +21,7 @@ export const GraphEditor = ( { code, libraries, onSave, onRefetch, loading, enab
   const [ openClassDlg, setOpenClassDlg ] = useState( false )
   const [ isInvalid, setInvalid ] = useState( false )
   const [ schema, setSchema ] = useState( {
-    code: print( parse( code ) ),
+    code,
     libraries,
   } )
 
@@ -54,6 +55,17 @@ export const GraphEditor = ( { code, libraries, onSave, onRefetch, loading, enab
           </IconButton>
         </Tooltip>}
 
+      {onCopy &&
+        <Tooltip title="Copy to Clipboard" placement='right-end'>
+          <IconButton
+            size="small"
+            onClick={() => onCopy( schema )}
+            disabled={loading || isInvalid}
+          >
+            <ContentCopyIcon fontSize='small' />
+          </IconButton>
+        </Tooltip>}
+
       {enableImports && <GraphImportMenu onItemClick={onImportClick} />}
     </React.Fragment>
   )
@@ -83,6 +95,7 @@ export const GraphEditor = ( { code, libraries, onSave, onRefetch, loading, enab
           // onSchemaChange={( props ) => {
           //   setschema( props )
           // }}
+          state={state}
           readonly={loading}
           setSchema={( props, isInvalid ) => { setInvalid( isInvalid ); setSchema( props ) }}
           schema={schema}

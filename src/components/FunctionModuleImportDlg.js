@@ -2,11 +2,11 @@ import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Dialog from '@mui/material/Dialog'
-import Tooltip from '@mui/material/Tooltip'
-import DialogActions from '@mui/material/DialogActions'
+// import Tooltip from '@mui/material/Tooltip'
+// import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+// import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import ClearIcon from '@mui/icons-material/Clear'
 import { useEffect, useState } from 'react'
 import { useSnackbar } from 'notistack'
@@ -20,6 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid } from '@mui/material'
 import FormInputText from './FormInput/FormInputText'
 import GraphEditor from './GraphEditor'
+import { gqlParse } from '../utils/gql_utils'
 
 function copyTextToClipBoard( strData ) {
   navigator.clipboard.writeText( strData )
@@ -43,7 +44,7 @@ function FunctionModuleImportDlg( { open, scroll = 'paper', onClose } ) {
     } if ( data && data.sdl ) {
       // const parsed = print( parse( data.sdl ) )
       if ( sdl !== data.sdl ) {
-        setSDL( data.sdl )
+        setSDL( gqlParse( { code: data.sdl } ) )
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,11 +80,13 @@ function FunctionModuleImportDlg( { open, scroll = 'paper', onClose } ) {
           <GraphEditor key={fmName}
             code={sdl} libraries={''}
             loading={loading} enableImports={false}
+            onCopy={( { code } ) => copyTextToClipBoard( code )}
+            state={{ pane: 'hierarchy', code: true }}
           />}
       </DialogContent>
-      <DialogActions>
+      {/* <DialogActions>
         <Tooltip title="Copy to Clipboard"><IconButton onClick={() => copyTextToClipBoard( sdl )}><ContentCopyIcon /></IconButton></Tooltip>
-      </DialogActions>
+      </DialogActions> */}
     </Dialog>
   )
 }
