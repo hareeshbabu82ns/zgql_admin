@@ -2,6 +2,7 @@
   "name": "zgql-admin",
   "version": "0.0.1",
   "private": true,
+  "homepage": "/sap/bc/bsp/sap/zgqlbsp_admin",
   "proxy": "http://localhost:4000",
   "dependencies": {
     "@apollo/client": "^3.5.8",

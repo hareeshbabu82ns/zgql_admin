@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import './index.css';
 import App from './App';
@@ -21,9 +21,9 @@ ReactDOM.render(
       <ThemeConfig>
         <SnackbarProvider maxSnack={5}>
           <ApolloProvider client={client}>
-            <BrowserRouter>
+            <HashRouter>
               <App />
-            </BrowserRouter>
+            </HashRouter>
           </ApolloProvider>
         </SnackbarProvider>
       </ThemeConfig>
