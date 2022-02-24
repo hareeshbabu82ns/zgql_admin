@@ -26,7 +26,7 @@ export const GraphEditor = ( { code, libraries, onSave, onRefetch, onCopy,
   } )
 
   const onImportClick = ( ele ) => {
-    console.log( ele.innerText )
+    // console.log( ele.innerText )
     if ( ele.innerText === 'Function Module' ) {
       setOpenFMDlg( true )
     } else if ( ele.innerText === 'Class' ) {

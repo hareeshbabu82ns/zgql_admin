@@ -9,8 +9,9 @@ import { useForm } from "react-hook-form"
 import { useMutation } from "@apollo/client"
 
 import { CREATE_SCHEMA } from '../utils/gql_queries_schema'
-import { useParams, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import _ from "lodash"
+import { BASE_PATH_GQL_GENERIC } from "../constants"
 
 const schemaFormSchema = yup.object().shape( {
   name: yup.string().min( 5 ).max( 50 ).required()
@@ -25,7 +26,7 @@ const schemaFormSchema = yup.object().shape( {
 const defaultValues = {
   name: '',
   description: '',
-  path: '/sap/bc/api/gql/???',
+  path: BASE_PATH_GQL_GENERIC,
 }
 
 const SchemaCreatePage = () => {

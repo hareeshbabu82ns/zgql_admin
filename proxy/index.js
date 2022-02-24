@@ -41,8 +41,37 @@ app.get( '/:id', async ( req, res ) => {
     res.send( ex )
   }
 } )
+app.get( `${config.gqlPath}/:id`, async ( req, res ) => {
+  try {
+    const gClient = prepareAxiosClient( {
+      apiPath: `${config.gqlPath}/${req.params.id}`
+    } )
+    const resp = await gClient.get( '/', {
+      params: req.query,
+      headers: { 'Authorization': req.headers.authorization }
+    } )
+    res.send( resp.data )
+  } catch ( ex ) {
+    res.send( ex )
+  }
+} )
 
 app.post( '/:id', async ( req, res ) => {
+  try {
+    const gClient = prepareAxiosClient( {
+      apiPath: `${config.gqlPath}/${req.params.id}`
+    } )
+    // console.log(req.body)
+    const resp = await gClient.post( '/', req.body, {
+      params: req.query,
+      headers: { 'Authorization': req.headers.authorization }
+    } )
+    res.send( resp.data )
+  } catch ( ex ) {
+    res.send( ex )
+  }
+} )
+app.post( `${config.gqlPath}/:id`, async ( req, res ) => {
   try {
     const gClient = prepareAxiosClient( {
       apiPath: `${config.gqlPath}/${req.params.id}`

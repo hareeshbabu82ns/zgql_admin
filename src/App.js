@@ -3,6 +3,7 @@ import {
   Route
 } from "react-router-dom";
 import GraphEditorPage from "./pages/GraphEditorPage";
+import GraphRunPage from "./pages/GraphRunPage";
 
 import DashboardPage from "./pages/DashboardPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -28,6 +29,9 @@ export const App = () => {
           <Route path="editor" >
             <Route path=":id" element={<GraphEditorPage />} />
             <Route index element={<SettingsPage />} />
+          </Route>
+          <Route path="graphiql" >
+            <Route path=":name" element={<GraphRunPage />} />
           </Route>
         </Route>
       </Route>

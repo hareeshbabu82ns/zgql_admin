@@ -18,6 +18,7 @@
     "@testing-library/user-event": "^13.2.1",
     "axios": "^0.25.0",
     "date-fns": "^2.28.0",
+    "graphiql": "^1.5.20",
     "graphql": "^16.3.0",
     "graphql-editor": "^5.2.1",
     "history": "^5.2.0",
